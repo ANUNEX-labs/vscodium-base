@@ -1,0 +1,46 @@
+name: Inspect VS Code source (find logo files)
+
+on:
+  workflow_dispatch: {}
+
+env:
+  APP_NAME: QALStudio
+  ASSETS_REPOSITORY: ${{ github.repository }}
+  BINARY_NAME: qalstudio
+  DISABLE_UPDATE: yes
+  GH_REPO_PATH: ${{ github.repository }}
+  GITHUB_BRANCH: master
+  ORG_NAME: ${{ github.repository_owner }}
+  OS_NAME: windows
+  VERSIONS_REPOSITORY: ${{ github.repository_owner }}/versions
+  VSCODE_QUALITY: stable
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.GITHUB_BRANCH }}
+          persist-credentials: false
+
+      - name: Clone VSCode repo
+        run: ./get_repo.sh
+
+      - name: Find logo files and references
+        run: |
+          set +e
+          cd vscode
+          echo "=== 1. letterpress / code-icon / vscode svg files ==="
+          find . -path ./node_modules -prune -o -type f \( -iname '*letterpress*' -o -iname 'code-icon*' -o -iname '*vscode*.svg' \) -print | head -40
+          echo "=== 2. source files that reference them ==="
+          grep -rIl -e 'letterpress' -e 'code-icon' src --include='*.ts' --include='*.css' --include='*.html' --include='*.js' | head -30
+          echo "=== 3. Codicon.vscode usage (welcome tab icon) ==="
+          grep -rn 'Codicon.vscode' src --include='*.ts' | head -20
+          echo "=== 4. window app icon css ==="
+          grep -rn 'window-appicon' src --include='*.css' | head -10
+          cd ..
+          echo "=== 5. VSCodium patches that mention these ==="
+          grep -rIl -e 'letterpress' -e 'code-icon' -e 'codicon' patches | head -30
+          echo "=== done ==="
