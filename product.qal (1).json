@@ -1,0 +1,34 @@
+{
+  "nameShort": "QALStudio",
+  "nameLong": "QAL Studio",
+  "applicationName": "qalstudio",
+  "dataFolderName": ".qalstudio",
+  "linuxIconName": "qalstudio",
+  "urlProtocol": "qalstudio",
+  "serverApplicationName": "qalstudio-server",
+  "serverDataFolderName": ".qalstudio-server",
+  "darwinBundleIdentifier": "com.anunex.qalstudio",
+  "win32AppUserModelId": "ANUNEX.QALStudio",
+  "win32DirName": "QAL Studio",
+  "win32MutexName": "qalstudio",
+  "win32NameVersion": "QAL Studio",
+  "win32RegValueName": "QALStudio",
+  "win32ShellNameShort": "QAL Studio",
+  "win32AppId": "{{25A4B5CC-E0AA-45E8-BC3F-62AD10A7A954}",
+  "win32x64AppId": "{{54A5DB82-ED37-4BFB-AA51-B9EB760FD24B}",
+  "win32arm64AppId": "{{A8F16ED3-C297-491C-BB97-EB78290F9FBC}",
+  "win32UserAppId": "{{DB287A60-AD19-474C-8AAD-8A7BB0611D10}",
+  "win32x64UserAppId": "{{46FDCEE1-C560-460C-92D5-C8184A829A90}",
+  "win32arm64UserAppId": "{{3187C34E-3137-4EC9-AA71-2D3664FE4C4F}",
+  "tunnelApplicationName": "qalstudio-tunnel",
+  "win32TunnelServiceMutex": "qalstudio-tunnelservice",
+  "win32TunnelMutex": "qalstudio-tunnel",
+  "win32ContextMenu": {
+    "x64": {
+      "clsid": "129C309C-12E5-4959-968D-41F4CDB71EAA"
+    },
+    "arm64": {
+      "clsid": "7659767C-50E2-471B-8755-DA8EC268CA74"
+    }
+  }
+}
