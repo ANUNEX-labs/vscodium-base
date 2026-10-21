@@ -1,5 +1,5 @@
 {
-  "nameShort": "QAL Studio",
+  "nameShort": "QALStudio",
   "nameLong": "QAL Studio",
   "applicationName": "qalstudio",
   "dataFolderName": ".qalstudio",
@@ -30,5 +30,8 @@
     "arm64": {
       "clsid": "7659767C-50E2-471B-8755-DA8EC268CA74"
     }
+  },
+  "configurationDefaults": {
+    "workbench.startupEditor": "none"
   }
 }
