@@ -13,6 +13,7 @@ env:
   OS_NAME: windows
   VERSIONS_REPOSITORY: ${{ github.repository_owner }}/versions
   VSCODE_QUALITY: stable
+  DISABLE_UPDATE: yes
 
 jobs:
   check:
