@@ -125,6 +125,8 @@ setpath_json "product" "tunnelApplicationConfig" '{}'
 
 jsonTmp=$( jq -s '.[0] * .[1]' product.json ../product.json )
 echo "${jsonTmp}" > product.json && unset jsonTmp
+jsonTmp=$( jq -s '.[0] * .[1]' product.json ../product.qal.json )
+echo "${jsonTmp}" > product.json && unset jsonTmp
 
 cat product.json
 # }}}
@@ -245,6 +247,7 @@ fi
 replace "s|\\[\\/\\* BUILTIN_ANNOUNCEMENTS \\*\\/\\]|$( tr -d '\n' < ../announcements-builtin.json )|" src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts
 
 ../undo_telemetry.sh
+sed -i 's|Editing evolved|Quantum, abstracted.|' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts || true
 
 replace 's|Microsoft Corporation|VSCodium|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
