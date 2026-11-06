@@ -230,7 +230,7 @@ cp package.json{,.bak}
 
 setpath "package" "version" "${RELEASE_VERSION%-insider}"
 
-replace 's|Microsoft Corporation|VSCodium|' package.json
+replace 's|Microsoft Corporation|ANUNEX|' package.json
 replace "s|--max-old-space-size=8192|--max-old-space-size=${MAX_OLD_SPACE_SIZE}|" package.json
 
 cp resources/server/manifest.json{,.bak}
@@ -249,7 +249,7 @@ replace "s|\\[\\/\\* BUILTIN_ANNOUNCEMENTS \\*\\/\\]|$( tr -d '\n' < ../announce
 ../undo_telemetry.sh
 sed -i 's|Editing evolved|Quantum, abstracted.|' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts || true
 
-replace 's|Microsoft Corporation|VSCodium|' build/lib/electron.ts
+replace 's|Microsoft Corporation|ANUNEX|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
 
 if [[ "${OS_NAME}" == "linux" ]]; then
@@ -287,8 +287,8 @@ if [[ "${OS_NAME}" == "linux" ]]; then
   sed -i 's|Visual Studio Code|VSCodium|' resources/linux/rpm/code.spec.template
 elif [[ "${OS_NAME}" == "windows" ]]; then
   # code.iss
-  sed -i 's|https://code.visualstudio.com|https://vscodium.com|' build/win32/code.iss
-  sed -i 's|Microsoft Corporation|VSCodium|' build/win32/code.iss
+  sed -i 's|https://code.visualstudio.com|https://github.com/ANUNEX-labs|' build/win32/code.iss
+  sed -i 's|Microsoft Corporation|ANUNEX|' build/win32/code.iss
 fi
 
 cd ..

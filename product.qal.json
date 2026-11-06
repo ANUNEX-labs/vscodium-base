@@ -31,6 +31,20 @@
       "clsid": "7659767C-50E2-471B-8755-DA8EC268CA74"
     }
   },
+  "documentationUrl": "",
+  "releaseNotesUrl": "",
+  "keyboardShortcutsUrlWin": "",
+  "keyboardShortcutsUrlMac": "",
+  "keyboardShortcutsUrlLinux": "",
+  "introductoryVideosUrl": "",
+  "tipsAndTricksUrl": "",
+  "twitterUrl": "",
+  "requestFeatureUrl": "",
+  "licenseUrl": "",
+  "checksumFailMoreInfoUrl": "",
+  "reportIssueUrl": "",
+  "updateUrl": "",
+  "downloadUrl": "",
   "configurationDefaults": {
     "workbench.startupEditor": "none",
     "workbench.activityBar.location": "top"
