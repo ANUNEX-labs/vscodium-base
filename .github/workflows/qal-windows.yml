@@ -80,6 +80,34 @@ jobs:
         run: ./get_repo.sh
         if: env.SHOULD_BUILD == 'yes'
 
+      - name: Fetch QAL core (private repo)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ANUNEX-labs/qal-core
+          ref: main
+          token: ${{ secrets.QAL_CORE_TOKEN }}
+          path: qal-core
+          persist-credentials: false
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Add QAL as a built-in extension
+        run: |
+          set -euo pipefail
+          dest="src/stable/extensions/qal"
+          rm -rf "$dest"
+          mkdir -p "$dest"
+          cp -r qal-core/vscode-extension/. "$dest/"
+          rm -rf "$dest/test" "$dest/scripts" "$dest/.vscode" "$dest/node_modules" "$dest/engine"
+          rm -f "$dest"/*.vsix
+          mkdir -p "$dest/engine"
+          cp -r qal-core/qal "$dest/engine/qal"
+          find "$dest" -name "__pycache__" -type d -prune -exec rm -rf {} +
+          test -f "$dest/package.json"
+          test -f "$dest/package.nls.json"
+          test -f "$dest/engine/qal/engine.py"
+          echo "QAL extension $(node -p "require('./$dest/package.json').version") added as built-in"
+        if: env.SHOULD_BUILD == 'yes'
+
       - name: Build
         env:
           SHOULD_BUILD_REH: no
@@ -178,5 +206,5 @@ jobs:
             assets/*.exe
             assets/*.zip
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
         if: env.SHOULD_BUILD == 'yes'
