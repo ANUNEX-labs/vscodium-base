@@ -257,6 +257,11 @@ grep -q 'qal.showWelcome' src/vs/workbench/contrib/welcomeGettingStarted/browser
 replace 's#if \(environmentService\.skipWelcome\) \{#if (environmentService.skipWelcome || true) {#' src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts
 grep -q 'skipWelcome || true' src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts || { echo "QAL patch failed: startup welcome"; exit 1; }
 
+# QAL Studio: Settings (gear menu, File > Preferences, Ctrl+,) opens the QAL settings page.
+# Opening settings with a query (used by many internal links) and "Open Settings (UI)" still open the stock settings editor.
+replace 's#// args takes a string for backcompat#// QAL Studio: plain Settings opens the QAL settings page\n\t\t\t\tif (!args) { return accessor.get(ICommandService).executeCommand("qal.openSettings"); }\n\t\t\t\t// args takes a string for backcompat#' src/vs/workbench/contrib/preferences/browser/preferences.contribution.ts
+grep -q 'qal.openSettings' src/vs/workbench/contrib/preferences/browser/preferences.contribution.ts || { echo "QAL patch failed: Settings"; exit 1; }
+
 replace 's|Microsoft Corporation|ANUNEX|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
 
