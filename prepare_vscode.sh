@@ -249,6 +249,14 @@ replace "s|\\[\\/\\* BUILTIN_ANNOUNCEMENTS \\*\\/\\]|$( tr -d '\n' < ../announce
 ../undo_telemetry.sh
 sed -i 's|Editing evolved|Quantum, abstracted.|' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts || true
 
+# QAL Studio: the stock Welcome page is replaced by the welcome page of the built-in QAL extension.
+# 1) Help > Welcome (and the Welcome command) opens the QAL welcome page.
+replace 's#const activeEditor = editorService\.activeEditor;#const activeEditor = editorService.activeEditor;\n\t\tif (!walkthroughID) { void commandService.executeCommand("qal.showWelcome"); return; }#' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts
+grep -q 'qal.showWelcome' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts || { echo "QAL patch failed: Help > Welcome"; exit 1; }
+# 2) The stock Welcome page never opens by itself at startup (the QAL extension decides when to show its own).
+replace 's#if \(environmentService\.skipWelcome\) \{#if (environmentService.skipWelcome || true) {#' src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts
+grep -q 'skipWelcome || true' src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts || { echo "QAL patch failed: startup welcome"; exit 1; }
+
 replace 's|Microsoft Corporation|ANUNEX|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
 

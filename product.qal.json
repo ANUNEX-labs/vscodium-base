@@ -47,6 +47,8 @@
   "downloadUrl": "",
   "configurationDefaults": {
     "workbench.startupEditor": "none",
-    "workbench.activityBar.location": "top"
+    "workbench.activityBar.location": "top",
+    "workbench.colorTheme": "QAL Dark",
+    "window.commandCenter": false
   }
 }
