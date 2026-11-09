@@ -49,6 +49,7 @@
     "workbench.startupEditor": "none",
     "workbench.activityBar.location": "top",
     "workbench.colorTheme": "QAL Dark",
-    "window.commandCenter": false
+    "window.commandCenter": true,
+    "workbench.layoutControl.enabled": false
   }
 }

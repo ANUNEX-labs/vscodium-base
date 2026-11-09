@@ -262,6 +262,31 @@ grep -q 'skipWelcome || true' src/vs/workbench/contrib/welcomeGettingStarted/bro
 replace 's#// args takes a string for backcompat#// QAL Studio: plain Settings opens the QAL settings page\n\t\t\t\tif (!args) { return accessor.get(ICommandService).executeCommand("qal.openSettings"); }\n\t\t\t\t// args takes a string for backcompat#' src/vs/workbench/contrib/preferences/browser/preferences.contribution.ts
 grep -q 'qal.openSettings' src/vs/workbench/contrib/preferences/browser/preferences.contribution.ts || { echo "QAL patch failed: Settings"; exit 1; }
 
+# QAL Studio: Cursor-style title bar.
+# 1) A compact project-name pill in the middle (click = quick open), so all the menus fit on the left.
+replace 's#width: 38vw;#width: min(34vw, 240px);#' src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css
+replace '/\.command-center-center \{$/,/^\}/ s#border-radius: [^;]*;#border-radius: 12px;#' src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css
+grep -q 'min(34vw, 240px)' src/vs/workbench/browser/parts/titlebar/media/titlebarpart.css || { echo "QAL patch failed: title bar pill"; exit 1; }
+# 2) A "Toggle Primary Side Bar" button next to the back/forward arrows.
+cat >> src/vs/workbench/browser/actions/layoutActions.ts <<'QAL_EOF'
+
+// QAL Studio: Cursor-style "Toggle Primary Side Bar" button next to the back/forward arrows
+MenuRegistry.appendMenuItem(MenuId.CommandCenter, {
+	command: {
+		id: ToggleSidebarVisibilityAction.ID,
+		title: localize('qalToggleSideBar', "Toggle Primary Side Bar"),
+		icon: panelLeftOffIcon,
+		toggled: { condition: SideBarVisibleContext, icon: panelLeftIcon }
+	},
+	order: 0,
+	when: ContextKeyExpr.has('config.workbench.navigationControl.enabled')
+});
+QAL_EOF
+grep -q 'qalToggleSideBar' src/vs/workbench/browser/actions/layoutActions.ts || { echo "QAL patch failed: sidebar toggle button"; exit 1; }
+# 3) No Accounts icon in the title bar until QAL accounts exist.
+replace 's#(ACCOUNTS_VISIBILITY_PREFERENCE_KEY, StorageScope\.PROFILE, )true\)#\1false)#' src/vs/workbench/browser/parts/globalCompositeBar.ts
+grep -q 'StorageScope.PROFILE, false' src/vs/workbench/browser/parts/globalCompositeBar.ts || { echo "QAL patch failed: accounts icon"; exit 1; }
+
 replace 's|Microsoft Corporation|ANUNEX|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
 
