@@ -102,6 +102,8 @@ jobs:
           mkdir -p "$dest/engine"
           cp -r qal-core/qal "$dest/engine/qal"
           find "$dest" -name "__pycache__" -type d -prune -exec rm -rf {} +
+          # register the QAL color themes through VS Code's own theme extension and list them only once
+          node qal-core/vscode-extension/scripts/embed-themes.js vscode "$dest"
           test -f "$dest/package.json"
           test -f "$dest/package.nls.json"
           test -f "$dest/engine/qal/engine.py"

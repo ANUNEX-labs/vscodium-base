@@ -44,12 +44,5 @@
   "checksumFailMoreInfoUrl": "",
   "reportIssueUrl": "",
   "updateUrl": "",
-  "downloadUrl": "",
-  "configurationDefaults": {
-    "workbench.startupEditor": "none",
-    "workbench.activityBar.location": "top",
-    "workbench.colorTheme": "QAL Dark",
-    "window.commandCenter": true,
-    "workbench.layoutControl.enabled": false
-  }
+  "downloadUrl": ""
 }

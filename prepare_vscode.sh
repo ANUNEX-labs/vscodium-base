@@ -251,7 +251,7 @@ sed -i 's|Editing evolved|Quantum, abstracted.|' src/vs/workbench/contrib/welcom
 
 # QAL Studio: the stock Welcome page is replaced by the welcome page of the built-in QAL extension.
 # 1) Help > Welcome (and the Welcome command) opens the QAL welcome page.
-replace 's#const activeEditor = editorService\.activeEditor;#const activeEditor = editorService.activeEditor;\n\t\tif (!walkthroughID) { void commandService.executeCommand("qal.showWelcome"); return; }#' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts
+replace 's#const activeEditor = editorService\.activeEditor;#const activeEditor = editorService.activeEditor;\n\t\tif (typeof walkthroughID !== "string") { if (!walkthroughID || !("category" in walkthroughID)) { void commandService.executeCommand("qal.showWelcome"); return; } }#' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts
 grep -q 'qal.showWelcome' src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts || { echo "QAL patch failed: Help > Welcome"; exit 1; }
 # 2) The stock Welcome page never opens by itself at startup (the QAL extension decides when to show its own).
 replace 's#if \(environmentService\.skipWelcome\) \{#if (environmentService.skipWelcome || true) {#' src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts
@@ -286,6 +286,17 @@ grep -q 'qalToggleSideBar' src/vs/workbench/browser/actions/layoutActions.ts || 
 # 3) No Accounts icon in the title bar until QAL accounts exist.
 replace 's#(ACCOUNTS_VISIBILITY_PREFERENCE_KEY, StorageScope\.PROFILE, )true\)#\1false)#' src/vs/workbench/browser/parts/globalCompositeBar.ts
 grep -q 'StorageScope.PROFILE, false' src/vs/workbench/browser/parts/globalCompositeBar.ts || { echo "QAL patch failed: accounts icon"; exit 1; }
+
+# QAL Studio: classic flat layout (straight edges, no floating rounded panels), like Cursor.
+# NOTE: product.json "configurationDefaults" is not read by desktop VS Code, so defaults are changed in the source.
+replace "/\\[LayoutSettings\\.MODERN_UI\\]: \\{/,/\\},/ s#.default.: true,#\\x27default\\x27: false,#" src/vs/workbench/browser/workbench.contribution.ts
+# No layout-control buttons in the title bar (the sidebar toggle next to the arrows replaces them).
+replace "/\\[LayoutSettings\\.LAYOUT_ACTIONS\\]: \\{/,/\\},/ s#.default.: true,#\\x27default\\x27: false,#" src/vs/workbench/browser/workbench.contribution.ts
+test "$(grep -c "'default': false," src/vs/workbench/browser/workbench.contribution.ts)" -ge 2 || { echo "QAL patch failed: flat layout defaults"; exit 1; }
+# QAL themes are the default dark/light themes (they are registered by the build workflow, see embed-themes.js).
+replace "s#COLOR_THEME_DARK = .Dark 2026.;#COLOR_THEME_DARK = \\x27QAL Dark\\x27;#" src/vs/workbench/services/themes/common/workbenchThemeService.ts
+replace "s#COLOR_THEME_LIGHT = .Light 2026.;#COLOR_THEME_LIGHT = \\x27QAL Light\\x27;#" src/vs/workbench/services/themes/common/workbenchThemeService.ts
+grep -q "COLOR_THEME_DARK = 'QAL Dark'" src/vs/workbench/services/themes/common/workbenchThemeService.ts || { echo "QAL patch failed: default theme"; exit 1; }
 
 replace 's|Microsoft Corporation|ANUNEX|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 VSCodium|' build/lib/electron.ts
